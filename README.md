@@ -2,12 +2,7 @@
 
 Shows your active Claude Code project as a Discord Rich Presence status.
 
-```
-[App Icon]  Claude Code
-            Create Claude Code Discord rich presence   ← Claude's session title
-            Claude Code Rich Presence | Sonnet 4.6     ← project folder + model
-            34:12 elapsed
-```
+![Preview](assets/preview.png)
 
 ## Setup
 
