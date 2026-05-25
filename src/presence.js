@@ -76,6 +76,7 @@ function parseSession(filePath) {
   let model = null;
   let aiTitle = null;
   let sessionStart = null;
+  let sessionEnded = false;
 
   try {
     const content = fs.readFileSync(filePath, 'utf8');
@@ -90,20 +91,24 @@ function parseSession(filePath) {
         if (!sessionStart && entry.timestamp) {
           sessionStart = new Date(entry.timestamp).getTime();
         }
-        // Always take the latest ai-title (Claude updates it as the task evolves)
         if (entry.type === 'ai-title' && entry.aiTitle) {
           aiTitle = entry.aiTitle;
         }
-        // Model is embedded in hook attachment content as JSON string
         if (!model && entry.attachment?.content) {
           const match = entry.attachment.content.match(/"model"\s*:\s*"([^"]+)"/);
           if (match) model = match[1];
+        }
+        // Track whether the terminal was closed (SessionEnd hook) or active (SessionStart / user message)
+        if (entry.attachment?.hookEvent === 'SessionEnd') {
+          sessionEnded = true;
+        } else if (entry.attachment?.hookEvent === 'SessionStart' || entry.type === 'user') {
+          sessionEnded = false;
         }
       } catch {}
     }
   } catch {}
 
-  return { cwd, model, aiTitle, sessionStart };
+  return { cwd, model, aiTitle, sessionStart, sessionEnded };
 }
 
 function formatModelName(model) {
@@ -125,7 +130,13 @@ async function updatePresence() {
     return;
   }
 
-  const { cwd, model, aiTitle, sessionStart } = parseSession(sessionFile);
+  const { cwd, model, aiTitle, sessionStart, sessionEnded } = parseSession(sessionFile);
+
+  if (sessionEnded) {
+    try { await rpc.clearActivity(); } catch {}
+    return;
+  }
+
   const projectName = cwd ? path.basename(cwd) : 'Unknown Project';
   const modelName = formatModelName(model);
   const details = aiTitle || projectName;
