@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-rich-presence",
+  "version": "1.0.0",
+  "description": "Discord Rich Presence for Claude Code",
+  "main": "src/presence.js",
+  "scripts": {
+    "start": "node -r dotenv/config src/presence.js"
+  },
+  "dependencies": {
+    "discord-rpc": "^4.0.1",
+    "dotenv": "^16.4.5"
+  }
+}

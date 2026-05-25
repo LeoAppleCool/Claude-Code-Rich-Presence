@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(npm install *)",
+      "PowerShell(cd \"C:\\\\Users\\\\Leo\\\\Desktop\\\\Claude Code Rich Presence\"; node --check src/presence.js; Write-Host \"Syntax OK: $LASTEXITCODE\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Leo\\\\Desktop\\\\Claude Code Rich Presence\" -Force -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object FullName)",
+      "PowerShell(Get-Content \"C:\\\\Users\\\\Leo\\\\.claude\\\\projects\\\\C--Users-Leo-Desktop-Claude-Code-Rich-Presence\\\\3c1f1804-e0fd-4ec2-bbe4-842db25444ee.jsonl\" | ForEach-Object { try { $j = $_ | ConvertFrom-Json; if \\($j.type -and $j.type -notmatch \"user|assistant|attachment|file-history\"\\) { Write-Host \"TYPE: $\\($j.type\\) | $\\($_\\)\" } } catch {} } | Select-Object -First 20)",
+      "PowerShell(node --check \"C:\\\\Users\\\\Leo\\\\Desktop\\\\Claude Code Rich Presence\\\\src\\\\presence.js\"; Write-Host \"OK: $LASTEXITCODE\")",
+      "PowerShell(reg query *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Leo\\\\Desktop\\\\Claude Code Rich Presence\" -Force | Where-Object { !$_.PSIsContainer } | Select-Object Name, Length)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "claude-flow"
+  ]
+}
